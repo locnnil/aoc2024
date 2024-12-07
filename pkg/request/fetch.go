@@ -4,20 +4,22 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/locnnil/aoc2024.git/pkg/env"
 )
 
-const baseURL = "https://adventofcode.com/2024/day/%v/input"
+const BaseURL = "https://adventofcode.com/2024/day/%v/input"
 
-func ReadInput(day int, tk string) (string, error) {
-	url := fmt.Sprintf(baseURL, day)
-	fmt.Println(url)
+func ReadInput(day int) (string, error) {
+	env.LoadEnv()
+	tk := env.GetOrDie("SESSION_TOKEN")
 
 	req, err := CreateRequest(day, tk)
 	if err != nil {
 		return "", err
 	}
-	client := &http.Client{}
 
+	client := &http.Client{}
 	resp, err := client.Do(&req)
 	if err != nil {
 		return "", fmt.Errorf("error sending HTTP request: %v", err)
@@ -39,8 +41,7 @@ func CreateRequest(day int, tk string) (http.Request, error) {
 		return http.Request{}, fmt.Errorf("no session token provided")
 	}
 
-	url := fmt.Sprintf(baseURL, day)
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf(BaseURL, day), nil)
 	if err != nil {
 		return http.Request{}, fmt.Errorf("error creat. HTTP request: %v", err)
 	}
