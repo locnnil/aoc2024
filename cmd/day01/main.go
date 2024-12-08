@@ -16,6 +16,8 @@ func main() {
 		return
 	}
 
+	// ----------------------------- Part 1 ------------------------------------
+
 	nums := make([]string, 0, 2000)
 	fmt.Printf("Words:\n %v", nums)
 
@@ -70,6 +72,32 @@ func main() {
 	}
 
 	fmt.Println("\n\n[FINAL] Sum: ", sum)
+	// ----------------------------- Part 2 ------------------------------------
+
+	similarity := make([]int, 0, size)
+	for i, n := range left {
+		fmt.Printf("left[%v]: %v\n", i, n)
+
+		counter := 0
+		for j, m := range rigth {
+			fmt.Printf("rigth[%v]: %v\n", j, m)
+			if m > n {
+				similarity = append(similarity, counter*n)
+				// Since the lists are now ordered, we can break the loop
+				break
+			}
+			if n == m {
+				counter++
+			}
+		}
+	}
+
+	simly := 0
+	for _, n := range similarity {
+		simly += n
+	}
+
+	fmt.Println("\n\n[FINAL PART 2] Similarity: ", simly)
 }
 
 // Avoiding the use of the math.Abs function
